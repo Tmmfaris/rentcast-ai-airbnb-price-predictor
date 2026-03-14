@@ -169,7 +169,7 @@ POST /api/predict
 
 ### Example Request
 
----
+```
 {
 "neighbourhood": "Manhattan",
 "property_type": "Apartment",
@@ -180,15 +180,15 @@ POST /api/predict
 "review_scores_rating": 90,
 "host_experience": 3
 }
----
+```
 
 ### Example Response
 
----
+```
 {
 "predicted_price": 145.20
 }
----
+```
 
 ---
 
