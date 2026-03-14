@@ -104,7 +104,6 @@ rentcast-ai-airbnb-price-predictor
 │ └── style.css
 └── js
 └── script.js
-
 ---
 
 # Screenshots
