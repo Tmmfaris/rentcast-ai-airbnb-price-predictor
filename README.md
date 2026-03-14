@@ -134,25 +134,25 @@ Clone the repository
 git clone https://github.com/Tmmfaris/rentcast-ai-airbnb-price-predictor.git
 
 
-Move to project directory
+### Move to project directory
 
 
 cd rentcast-ai-airbnb-price-predictor
 
 
-Install dependencies
+### Install dependencies
 
 
 pip install -r requirements.txt
 
 
-Run the application
+### Run the application
 
 
 python app.py
 
 
-Open the application in browser
+### Open the application in browser
 
 
 http://127.0.0.1:5000
@@ -169,7 +169,7 @@ POST /api/predict
 
 ### Example Request
 
-
+---
 {
 "neighbourhood": "Manhattan",
 "property_type": "Apartment",
@@ -180,15 +180,15 @@ POST /api/predict
 "review_scores_rating": 90,
 "host_experience": 3
 }
-
+---
 
 ### Example Response
 
-
+---
 {
 "predicted_price": 145.20
 }
-
+---
 
 ---
 
@@ -216,7 +216,7 @@ The model pipeline performs:
 
 # Author
 
-Muhammed Faris T M  
+### Muhammed Faris T M  
 MSc Physics  
 Data Science & AI Enthusiast
 
