@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RentCast AI | Airbnb Price Predictor</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo-section">
+
+<div class="logo-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+
+<div class="logo-text">RentCast AI</div>
+
+</div>
+
+
+<nav>
+
+<ul>
+
+<li>
+<a href="/" class="active">
+<i class="fa-solid fa-house"></i>
+<span>Prediction</span>
+</a>
+</li>
+
+<li>
+<a href="/dashboard">
+<i class="fa-solid fa-gauge-high"></i>
+<span>Monitoring</span>
+</a>
+</li>
+
+<li>
+<a href="/analytics">
+<i class="fa-solid fa-chart-pie"></i>
+<span>Analytics</span>
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="dashboard-main">
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="header-info">
+
+<h1>RentCast AI</h1>
+
+<p>Smart Airbnb Price Prediction using Machine Learning</p>
+
+</div>
+
+
+<button id="themeToggle" class="theme-toggle" title="Toggle Dark Mode">
+
+<i class="fa-solid fa-moon"></i>
+
+</button>
+
+</header>
+
+
+
+<!-- CONTENT GRID -->
+
+<div class="content-wrapper">
+
+
+<!-- PREDICTION FORM -->
+
+<section class="card">
+
+<div class="card-header">
+
+<h2>
+<i class="fa-solid fa-building"></i>
+Property Details
+</h2>
+
+<p>Provide listing details to estimate market value.</p>
+
+</div>
+
+
+<form action="/predict" method="POST" id="predictionForm">
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-location-dot"></i>
+Neighbourhood
+</label>
+
+<select name="neighbourhood" required>
+
+<option value="Brooklyn">Brooklyn</option>
+<option value="Manhattan">Manhattan</option>
+<option value="Queens">Queens</option>
+<option value="Bronx">Bronx</option>
+<option value="Staten Island">Staten Island</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-house-user"></i>
+Property Type
+</label>
+
+<select name="property_type" required>
+
+<option value="Apartment">Apartment</option>
+<option value="House">House</option>
+<option value="Condominium">Condominium</option>
+<option value="Loft">Loft</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-door-open"></i>
+Room Type
+</label>
+
+<select name="room_type" required>
+
+<option value="Entire home/apt">Entire home/apt</option>
+<option value="Private room">Private room</option>
+<option value="Shared room">Shared room</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-location-pin"></i>
+Zipcode
+</label>
+
+<input type="number"
+name="zipcode"
+placeholder="e.g. 11211"
+required>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-bed"></i>
+Beds
+</label>
+
+<input type="number"
+name="beds"
+min="1"
+value="1"
+required>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-comments"></i>
+Reviews
+</label>
+
+<input type="number"
+name="number_of_reviews"
+min="0"
+value="10"
+required>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-ranking-star"></i>
+Rating (0-100)
+</label>
+
+<input type="number"
+name="review_scores_rating"
+step="0.1"
+min="0"
+max="100"
+value="95"
+required>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+<i class="fa-solid fa-user-clock"></i>
+Host Experience (Years)
+</label>
+
+<input type="number"
+name="host_experience"
+min="0"
+value="2"
+required>
+
+</div>
+
+
+
+<button type="submit" class="predict-btn">
+
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+
+Predict Market Price
+
+</button>
+
+</div>
+
+</form>
+
+
+
+<!-- LOADING -->
+
+<div id="loading" class="loading">
+
+<div class="spinner"></div>
+
+<p>Processing Market Data...</p>
+
+</div>
+
+</section>
+
+
+
+<!-- SIDE PANEL -->
+
+<aside class="side-panel">
+
+
+<!-- MARKET INSIGHTS -->
+
+<div class="card info-card">
+
+<h2>
+<i class="fa-solid fa-lightbulb"></i>
+Market Insights
+</h2>
+
+<ul>
+
+<li>
+<b>Location:</b> Listings in <b>Manhattan</b> generally command higher price floors.
+</li>
+
+<li>
+<b>Feedback:</b> Maintaining a high <b>Review Score</b> is critical for value retention.
+</li>
+
+<li>
+<b>Outliers:</b> Extreme prices were removed during model training.
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- QUICK DATASET STATS -->
+
+<div class="card info-card">
+
+<h2>
+<i class="fa-solid fa-database"></i>
+Dataset Overview
+</h2>
+
+<ul>
+
+<li>
+<b>Dataset:</b> NYC Airbnb Listings
+</li>
+
+<li>
+<b>Model:</b> Random Forest Pipeline
+</li>
+
+<li>
+<b>Features Used:</b> 8 Listing Attributes
+</li>
+
+<li>
+<b>Predictions:</b> Logged for Monitoring Dashboard
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- PREDICTION TIPS -->
+
+<div class="card info-card">
+
+<h2>
+<i class="fa-solid fa-star"></i>
+Prediction Tips
+</h2>
+
+<ul>
+
+<li>
+<b>Better Ratings</b> often increase listing value.
+</li>
+
+<li>
+<b>Entire Homes</b> typically command higher prices.
+</li>
+
+<li>
+<b>Popular Areas</b> like Manhattan see stronger demand.
+</li>
+
+</ul>
+
+</div>
+
+</aside>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- JS -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RentCast AI | Dataset Analytics</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo-section">
+
+<div class="logo-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+
+<div class="logo-text">RentCast AI</div>
+
+</div>
+
+<nav>
+
+<ul>
+
+<li>
+<a href="/">
+<i class="fa-solid fa-house"></i>
+<span>Prediction</span>
+</a>
+</li>
+
+<li>
+<a href="/dashboard">
+<i class="fa-solid fa-gauge-high"></i>
+<span>Monitoring</span>
+</a>
+</li>
+
+<li>
+<a href="/analytics" class="active">
+<i class="fa-solid fa-chart-pie"></i>
+<span>Analytics</span>
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+</aside>
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="dashboard-main">
+
+
+<header class="header">
+
+<div class="header-info">
+<h1>Dataset Analytics</h1>
+<p>Explore Airbnb dataset insights and distribution patterns</p>
+</div>
+
+<a href="/" class="theme-toggle">
+<i class="fa-solid fa-arrow-left"></i>
+</a>
+
+</header>
+
+
+
+<!-- KPI CARDS -->
+
+<div class="content-wrapper">
+
+<section class="card">
+
+<h2><i class="fa-solid fa-dollar-sign"></i> Average Price</h2>
+
+<h1 class="kpi-counter">
+${{ avg_price }}
+</h1>
+
+</section>
+
+
+
+<section class="card">
+
+<h2><i class="fa-solid fa-arrow-up"></i> Maximum Price</h2>
+
+<h1 class="kpi-counter">
+${{ max_price }}
+</h1>
+
+</section>
+
+
+
+<section class="card">
+
+<h2><i class="fa-solid fa-arrow-down"></i> Minimum Price</h2>
+
+<h1 class="kpi-counter">
+${{ min_price }}
+</h1>
+
+</section>
+
+</div>
+
+
+
+<!-- DATASET SUMMARY -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-database"></i> Dataset Summary</h2>
+</div>
+
+<div style="margin-top:10px">
+
+<p><b>Dataset:</b> NYC Airbnb Market Listings</p>
+<p><b>Primary Features:</b> Location, Property Type, Room Type, Beds, Reviews</p>
+<p><b>Model Usage:</b> Used to train ML price prediction pipeline</p>
+
+</div>
+
+</section>
+
+
+
+<!-- FILTERS -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-filter"></i> Dataset Filters</h2>
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Neighbourhood</label>
+
+<select id="neighbourFilter">
+
+<option value="all">All</option>
+<option value="Manhattan">Manhattan</option>
+<option value="Brooklyn">Brooklyn</option>
+<option value="Queens">Queens</option>
+<option value="Bronx">Bronx</option>
+<option value="Staten Island">Staten Island</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>Room Type</label>
+
+<select id="roomFilter">
+
+<option value="all">All</option>
+<option value="Entire home/apt">Entire home/apt</option>
+<option value="Private room">Private room</option>
+<option value="Shared room">Shared room</option>
+
+</select>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- CHART ROW -->
+
+<div class="content-wrapper">
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-map-location-dot"></i> Neighbourhood Distribution</h2>
+</div>
+
+<div style="height:320px">
+<canvas id="neighbourChart"></canvas>
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-chart-column"></i> Price Distribution</h2>
+</div>
+
+<div style="height:320px">
+<canvas id="priceChart"></canvas>
+</div>
+
+</section>
+
+</div>
+
+
+
+<!-- SECOND CHART ROW -->
+
+<div class="content-wrapper">
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-house-user"></i> Room Type Distribution</h2>
+</div>
+
+<div style="height:300px">
+<canvas id="roomChart"></canvas>
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-chart-line"></i> Price Trend</h2>
+</div>
+
+<div style="height:300px">
+<canvas id="trendChart"></canvas>
+</div>
+
+</section>
+
+</div>
+
+
+
+<!-- DATASET INSIGHTS -->
+
+<section class="card info-card">
+
+<h2><i class="fa-solid fa-lightbulb"></i> Dataset Insights</h2>
+
+<ul>
+
+<li>
+<b>High Demand:</b> Manhattan listings dominate higher price ranges.
+</li>
+
+<li>
+<b>Room Preference:</b> Entire home listings generate the highest revenue potential.
+</li>
+
+<li>
+<b>Pricing Spread:</b> Most listings fall within mid-range price brackets.
+</li>
+
+<li>
+<b>Market Growth:</b> Airbnb demand continues to increase across major boroughs.
+</li>
+
+</ul>
+
+</section>
+
+</main>
+
+</div>
+
+
+
+<script>
+
+/* NEIGHBOURHOOD CHART */
+
+const neighbourhoodData = {{ neighbourhood_counts | tojson }};
+
+new Chart(document.getElementById("neighbourChart"),{
+
+type:"pie",
+
+data:{
+labels:Object.keys(neighbourhoodData),
+datasets:[{
+data:Object.values(neighbourhoodData),
+backgroundColor:[
+"#6366f1",
+"#22c55e",
+"#f59e0b",
+"#ef4444",
+"#14b8a6"
+]
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+/* PRICE DISTRIBUTION */
+
+new Chart(document.getElementById("priceChart"),{
+
+type:"bar",
+
+data:{
+labels:["Low","Medium","High","Luxury"],
+datasets:[{
+label:"Listings",
+data:[120,340,210,60],
+backgroundColor:"#6366f1"
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+/* ROOM TYPE */
+
+new Chart(document.getElementById("roomChart"),{
+
+type:"doughnut",
+
+data:{
+labels:["Entire home/apt","Private room","Shared room"],
+datasets:[{
+data:[60,35,5],
+backgroundColor:[
+"#6366f1",
+"#22c55e",
+"#f59e0b"
+]
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+/* TREND */
+
+new Chart(document.getElementById("trendChart"),{
+
+type:"line",
+
+data:{
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
+datasets:[{
+label:"Average Listing Price",
+data:[120,140,135,150,165,155],
+borderColor:"#22c55e",
+backgroundColor:"rgba(34,197,94,0.2)",
+fill:true,
+tension:0.3
+}]
+},
+
+options:{responsive:true}
+
+});
+
+</script>
+
+</body>
+</html>

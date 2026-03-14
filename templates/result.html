@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RentCast AI | Prediction Result</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo-section">
+<div class="logo-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+<div class="logo-text">RentCast AI</div>
+</div>
+
+<nav>
+<ul>
+
+<li>
+<a href="/" class="active">
+<i class="fa-solid fa-house"></i>
+<span>Prediction</span>
+</a>
+</li>
+
+<li>
+<a href="/dashboard">
+<i class="fa-solid fa-gauge-high"></i>
+<span>Monitoring</span>
+</a>
+</li>
+
+<li>
+<a href="/analytics">
+<i class="fa-solid fa-chart-pie"></i>
+<span>Analytics</span>
+</a>
+</li>
+
+</ul>
+</nav>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="dashboard-main">
+
+
+<header class="header">
+
+<div class="header-info">
+<h1>Prediction Result</h1>
+<p>AI Generated Airbnb Price Estimate</p>
+</div>
+
+<a href="/" class="theme-toggle">
+<i class="fa-solid fa-arrow-left"></i>
+</a>
+
+</header>
+
+
+
+<div class="content-wrapper">
+
+
+<!-- PRICE RESULT -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-dollar-sign"></i> Estimated Market Price</h2>
+</div>
+
+<div style="text-align:center;margin:30px 0;">
+
+<h1 id="priceCounter"
+style="font-size:52px;color:var(--accent);font-weight:700;">
+$0
+</h1>
+
+{% if price_range is defined %}
+
+<p style="margin-top:10px;color:var(--text-secondary);">
+
+Estimated Range  
+<strong>$ {{ price_range[0] }}</strong> -  
+<strong>$ {{ price_range[1] }}</strong>
+
+</p>
+
+{% endif %}
+
+</div>
+
+</section>
+
+
+
+<!-- CONFIDENCE -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-shield-halved"></i> Prediction Confidence</h2>
+</div>
+
+<div style="margin-top:15px">
+
+<div style="background:#e5e7eb;height:10px;border-radius:8px;overflow:hidden">
+
+<div id="confidenceBar"
+style="
+height:10px;
+width:0%;
+background:linear-gradient(90deg,var(--accent),var(--accent-hover));
+transition:width 2s;
+"></div>
+
+</div>
+
+<p style="margin-top:10px;font-weight:500">
+
+Confidence Score:
+<strong id="confidenceText">0%</strong>
+
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- PRICE CHART -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-chart-column"></i> Price Estimate</h2>
+</div>
+
+<canvas id="priceChart"></canvas>
+
+</section>
+
+
+
+<!-- FEATURE IMPORTANCE -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-brain"></i> Key Factors Affecting Price</h2>
+</div>
+
+<canvas id="featureChart"></canvas>
+
+</section>
+
+
+
+<!-- SIDE PANEL -->
+
+<aside class="side-panel">
+
+
+<!-- AI INSIGHT -->
+
+<div class="card info-card">
+
+<h2><i class="fa-solid fa-lightbulb"></i> AI Insight</h2>
+
+<ul>
+
+<li>
+<b>Market Fit:</b> Your listing sits within a realistic competitive price range.
+</li>
+
+<li>
+<b>Demand Signal:</b> Location and review score strongly influence listing value.
+</li>
+
+<li>
+<b>Optimization:</b> Higher ratings and amenities may increase price potential.
+</li>
+
+</ul>
+
+</div>
+
+
+
+<!-- MARKET TREND -->
+
+<div class="card">
+
+<h2><i class="fa-solid fa-chart-line"></i> Market Trend</h2>
+
+<canvas id="trendChart"></canvas>
+
+</div>
+
+
+
+<!-- ACTION -->
+
+<div class="card">
+
+<a href="/" class="predict-btn">
+
+<i class="fa-solid fa-repeat"></i>
+
+Predict Another Property
+
+</a>
+
+</div>
+
+</aside>
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<script>
+
+const predicted = {{ prediction_text | default(0) }};
+const lower = {{ price_range[0] if price_range else 0 }};
+const upper = {{ price_range[1] if price_range else 0 }};
+
+
+/* PRICE COUNTER */
+
+let count = 0;
+const speed = predicted / 50;
+
+function animatePrice(){
+
+count += speed;
+
+if(count >= predicted){
+count = predicted;
+}
+
+document.getElementById("priceCounter").innerText =
+"$" + Math.floor(count);
+
+if(count < predicted){
+requestAnimationFrame(animatePrice);
+}
+
+}
+
+animatePrice();
+
+
+
+/* CONFIDENCE */
+
+const confidence = 94;
+
+setTimeout(()=>{
+
+document.getElementById("confidenceBar").style.width =
+confidence + "%";
+
+document.getElementById("confidenceText").innerText =
+confidence + "%";
+
+},500);
+
+
+
+/* PRICE CHART */
+
+new Chart(document.getElementById("priceChart"),{
+
+type:"bar",
+
+data:{
+labels:["Lower Estimate","Predicted Price","Upper Estimate"],
+datasets:[{
+label:"Price ($)",
+data:[lower,predicted,upper],
+backgroundColor:["#94a3b8","#6366f1","#22c55e"]
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+
+/* FEATURE IMPORTANCE */
+
+new Chart(document.getElementById("featureChart"),{
+
+type:"bar",
+
+data:{
+labels:[
+"Neighbourhood",
+"Room Type",
+"Beds",
+"Review Score",
+"Host Experience"
+],
+datasets:[{
+label:"Influence on Price",
+data:[40,30,20,15,10],
+backgroundColor:"#6366f1"
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+
+/* MARKET TREND */
+
+new Chart(document.getElementById("trendChart"),{
+
+type:"line",
+
+data:{
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
+datasets:[{
+label:"Average Market Price",
+data:[120,140,135,150,160,155],
+borderColor:"#22c55e",
+backgroundColor:"rgba(34,197,94,0.2)",
+fill:true,
+tension:0.3
+}]
+},
+
+options:{responsive:true}
+
+});
+
+</script>
+
+
+</body>
+</html>

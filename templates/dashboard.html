@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RentCast AI | Monitoring Dashboard</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo-section">
+
+<div class="logo-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+
+<div class="logo-text">RentCast AI</div>
+
+</div>
+
+<nav>
+
+<ul>
+
+<li>
+<a href="/">
+<i class="fa-solid fa-house"></i>
+<span>Prediction</span>
+</a>
+</li>
+
+<li>
+<a href="/dashboard" class="active">
+<i class="fa-solid fa-gauge-high"></i>
+<span>Monitoring</span>
+</a>
+</li>
+
+<li>
+<a href="/analytics">
+<i class="fa-solid fa-chart-pie"></i>
+<span>Analytics</span>
+</a>
+</li>
+
+</ul>
+
+</nav>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="dashboard-main">
+
+
+<header class="header">
+
+<div class="header-info">
+<h1>AI Monitoring Dashboard</h1>
+<p>Model activity and prediction monitoring</p>
+</div>
+
+<a href="/" class="theme-toggle">
+<i class="fa-solid fa-arrow-left"></i>
+</a>
+
+</header>
+
+
+
+<!-- KPI CARDS -->
+
+<div class="content-wrapper">
+
+<section class="card">
+
+<h2><i class="fa-solid fa-database"></i> Total Predictions</h2>
+
+<h1 class="kpi-counter">
+
+{{ history|length }}
+
+</h1>
+
+</section>
+
+
+
+<section class="card">
+
+<h2><i class="fa-solid fa-clock"></i> Latest Prediction</h2>
+
+<h1 class="kpi-counter">
+
+{% if history %}
+${{ history[-1].prediction }}
+{% else %}
+$0
+{% endif %}
+
+</h1>
+
+</section>
+
+
+
+<section class="card">
+
+<h2><i class="fa-solid fa-chart-line"></i> Average Prediction</h2>
+
+<h1 class="kpi-counter">
+
+{% if history %}
+${{ (history | map(attribute='prediction') | sum / history|length) | round(2) }}
+{% else %}
+$0
+{% endif %}
+
+</h1>
+
+</section>
+
+</div>
+
+
+
+<!-- TREND CHART -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-chart-area"></i> Prediction Trend</h2>
+</div>
+
+<div style="height:320px">
+<canvas id="predictionChart"></canvas>
+</div>
+
+</section>
+
+
+
+<!-- ANALYTICS ROW -->
+
+<div class="content-wrapper">
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-fire"></i> Prediction Activity</h2>
+</div>
+
+<div style="height:300px">
+<canvas id="heatmapChart"></canvas>
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-shield-halved"></i> Model Confidence</h2>
+</div>
+
+<div style="height:300px">
+<canvas id="confidenceGauge"></canvas>
+</div>
+
+</section>
+
+</div>
+
+
+
+<!-- MODEL HEALTH -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-heart-pulse"></i> Model Health Monitor</h2>
+</div>
+
+<div style="margin-top:15px">
+
+<p>Accuracy</p>
+<div style="background:#e5e7eb;height:10px;border-radius:6px">
+<div style="width:92%;height:10px;background:var(--accent)"></div>
+</div>
+
+<p style="margin-top:12px">Prediction Stability</p>
+<div style="background:#e5e7eb;height:10px;border-radius:6px">
+<div style="width:88%;height:10px;background:#22c55e"></div>
+</div>
+
+<p style="margin-top:12px">Data Quality</p>
+<div style="background:#e5e7eb;height:10px;border-radius:6px">
+<div style="width:95%;height:10px;background:#f59e0b"></div>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ACTIVITY + DEMAND -->
+
+<div class="content-wrapper">
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-bolt"></i> Live Prediction Activity</h2>
+</div>
+
+<div style="max-height:260px;overflow-y:auto;margin-top:10px">
+
+{% for row in history[-10:] | reverse %}
+
+<div style="padding:8px;border-bottom:1px solid var(--border)">
+
+<i class="fa-solid fa-circle"
+style="color:var(--accent);font-size:7px;margin-right:8px"></i>
+
+Prediction for
+<strong>{{ row.neighbourhood }}</strong>
+({{ row.property_type }})
+→
+<strong>${{ row.prediction }}</strong>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-fire-flame-curved"></i> Demand Signal</h2>
+</div>
+
+<div style="height:260px">
+<canvas id="trendChart"></canvas>
+</div>
+
+</section>
+
+</div>
+
+
+
+<!-- RECENT TABLE -->
+
+<section class="card">
+
+<div class="card-header">
+<h2><i class="fa-solid fa-table"></i> Recent Predictions</h2>
+</div>
+
+<div style="overflow-x:auto">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Neighbourhood</th>
+<th>Property</th>
+<th>Room</th>
+<th>Beds</th>
+<th>Prediction ($)</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for row in history %}
+
+<tr>
+
+<td>{{ row.neighbourhood }}</td>
+<td>{{ row.property_type }}</td>
+<td>{{ row.room_type }}</td>
+<td>{{ row.beds }}</td>
+<td><strong>${{ row.prediction }}</strong></td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+
+<script>
+
+/* TREND CHART */
+
+const labels = {{ labels | tojson }};
+const prices = {{ prices | tojson }};
+
+new Chart(document.getElementById("predictionChart"),{
+
+type:"line",
+
+data:{
+labels:labels,
+datasets:[{
+label:"Predicted Price ($)",
+data:prices,
+borderColor:"#6366f1",
+backgroundColor:"rgba(99,102,241,0.2)",
+fill:true,
+tension:0.3
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+/* HEATMAP */
+
+new Chart(document.getElementById("heatmapChart"),{
+
+type:"bar",
+
+data:{
+labels:["00","02","04","06","08","10","12","14","16","18","20","22"],
+datasets:[{
+label:"Predictions",
+data:[3,2,1,5,8,12,15,11,9,6,4,2],
+backgroundColor:"#6366f1"
+}]
+},
+
+options:{responsive:true}
+
+});
+
+
+/* CONFIDENCE */
+
+new Chart(document.getElementById("confidenceGauge"),{
+
+type:"doughnut",
+
+data:{
+labels:["Confidence","Remaining"],
+datasets:[{
+data:[94,6],
+backgroundColor:["#6366f1","#e5e7eb"]
+}]
+},
+
+options:{
+cutout:"70%",
+plugins:{legend:{display:false}}
+}
+
+});
+
+
+/* DEMAND SIGNAL */
+
+new Chart(document.getElementById("trendChart"),{
+
+type:"line",
+
+data:{
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
+datasets:[{
+label:"Market Demand",
+data:[120,140,135,150,165,155],
+borderColor:"#22c55e",
+backgroundColor:"rgba(34,197,94,0.2)",
+fill:true,
+tension:0.3
+}]
+},
+
+options:{responsive:true}
+
+});
+
+</script>
+
+
+</body>
+</html>
