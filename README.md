@@ -79,6 +79,7 @@ Prediction API endpoint for external integration.
 
 # Project Structure
 
+```
 rentcast-ai-airbnb-price-predictor
 │
 ├── app.py
@@ -107,6 +108,7 @@ rentcast-ai-airbnb-price-predictor
     │   └── style.css
     └── js
         └── script.js
+```
 
 ---
 
