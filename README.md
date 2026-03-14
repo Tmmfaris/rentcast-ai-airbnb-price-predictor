@@ -78,32 +78,36 @@ Prediction API endpoint for external integration.
 ---
 
 # Project Structure
+
 rentcast-ai-airbnb-price-predictor
 │
 ├── app.py
 ├── requirements.txt
+├── runtime.txt
+├── render.yaml
 ├── README.md
 │
 ├── data
-│ └── clean_airbnb_data.csv
+│   └── clean_airbnb_data.csv
 │
 ├── models
-│ └── airbnb_pipeline.pkl
+│   └── airbnb_pipeline.pkl
 │
 ├── logs
-│ └── prediction_history.csv
+│   └── prediction_history.csv
 │
 ├── templates
-│ ├── index.html
-│ ├── result.html
-│ ├── dashboard.html
-│ └── analytics.html
+│   ├── index.html
+│   ├── result.html
+│   ├── dashboard.html
+│   └── analytics.html
 │
 └── static
-├── css
-│ └── style.css
-└── js
-└── script.js
+    ├── css
+    │   └── style.css
+    └── js
+        └── script.js
+
 ---
 
 # Screenshots
