@@ -14,6 +14,30 @@ You can access the deployed application here and test the Airbnb price predictio
 
 ---
 
+# Google Colab Notebooks
+
+The full **data analysis and machine learning workflow** used in this project is available in the following Colab notebooks.
+
+### Data Exploration & Preprocessing
+https://colab.research.google.com/drive/1-Coharqrl2rgKvMQpdi-ITfJmx45z1KR?usp=sharing
+
+### Model Training & Evaluation
+https://colab.research.google.com/drive/1w1jgxZscLgj8jSB17B3j5v7icfJ1hPMO?usp=sharing
+
+### Model Optimization & Final Pipeline
+https://colab.research.google.com/drive/17HQiF75EnXGHOdG97QXDYmibLKcs98ZM?usp=sharing
+
+These notebooks include:
+
+- Dataset exploration
+- Feature engineering
+- Data preprocessing
+- Model training and evaluation
+- Hyperparameter tuning
+- Final pipeline creation for deployment
+
+---
+
 # Project Overview
 
 Airbnb hosts often struggle to determine the optimal listing price.  
@@ -54,7 +78,7 @@ Prediction API endpoint for external integration.
 
 # Tech Stack
 
-### Backend
+## Backend
 - Python
 - Flask
 - Scikit-learn
@@ -63,14 +87,14 @@ Prediction API endpoint for external integration.
 - Joblib
 - Gunicorn
 
-### Frontend
+## Frontend
 - HTML
 - CSS
 - JavaScript
 - Chart.js
 - FontAwesome
 
-### Machine Learning
+## Machine Learning
 - Scikit-learn Pipeline
 - Feature preprocessing
 - Regression model for price prediction
@@ -112,50 +136,38 @@ rentcast-ai-airbnb-price-predictor
 
 ---
 
-# Screenshots
-
-### Prediction Interface
-Users enter listing details to estimate Airbnb price.
-
-### Prediction Result
-Displays predicted price, estimated range, and feature influence.
-
-### Monitoring Dashboard
-Tracks prediction history and model activity.
-
-### Dataset Analytics
-Visualizes dataset insights and price distribution.
-
----
 
 # Installation
 
 Clone the repository
-git clone https://github.com/Tmmfaris/rentcast-ai-airbnb-price-predictor.git
 
+```
+git clone https://github.com/Tmmfaris/rentcast-ai-airbnb-price-predictor.git
+```
 
 ### Move to project directory
 
-
+```
 cd rentcast-ai-airbnb-price-predictor
-
+```
 
 ### Install dependencies
 
-
+```
 pip install -r requirements.txt
-
+```
 
 ### Run the application
 
-
+```
 python app.py
-
+```
 
 ### Open the application in browser
 
-
+```
 http://127.0.0.1:5000
+```
 
 ---
 
@@ -164,8 +176,8 @@ http://127.0.0.1:5000
 The application provides a REST API for predictions.
 
 ### Endpoint
-POST /api/predict
 
+POST `/api/predict`
 
 ### Example Request
 
@@ -196,11 +208,11 @@ POST /api/predict
 
 The model pipeline performs:
 
-1. Feature preprocessing
-2. Encoding categorical variables
-3. Scaling numerical features
-4. Regression model prediction
-5. Calibration adjustment for realistic pricing
+1. Feature preprocessing  
+2. Encoding categorical variables  
+3. Scaling numerical features  
+4. Regression model prediction  
+5. Calibration adjustment for realistic pricing  
 
 ---
 
@@ -218,10 +230,16 @@ The model pipeline performs:
 
 ### Muhammed Faris T M  
 MSc Physics  
-Data Science & AI Enthusiast
+Data Science & AI Enthusiast  
+
+🔗 LinkedIn  
+http://www.linkedin.com/in/muhammed-faris-tm-ab1233196
+
+🔗 GitHub  
+https://github.com/Tmmfaris
 
 ---
 
-# License
+# 📄 License
 
 This project is for educational and research purposes.
